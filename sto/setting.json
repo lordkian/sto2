@@ -1,0 +1,101 @@
+{
+  "HostPriorities": [
+    {
+      "HostName": "Vivo",
+      "Priority": 1,
+      "SiteAddr": "vivo.sx",
+      "Enable": true
+    },
+    {
+      "HostName": "VidCloud",
+      "Priority": 2,
+      "SiteAddr": "vidcloud.co",
+      "Enable": true
+    },
+    {
+      "HostName": "VeryStream HD-Stream",
+      "Priority": 3,
+      "SiteAddr": "verystream.com",
+      "Enable": true
+    },
+    {
+      "HostName": "Streamango HD-Stream",
+      "Priority": 4,
+      "SiteAddr": "streamango.com",
+      "Enable": true
+    },
+    {
+      "HostName": "JetLoad HD-Stream",
+      "Priority": 5,
+      "SiteAddr": "jetload.net",
+      "Enable": true
+    },
+    {
+      "HostName": "Openload HD-Stream",
+      "Priority": 6,
+      "SiteAddr": "oload.stream",
+      "Enable": true
+    },
+    {
+      "HostName": "Openload",
+      "Priority": 7,
+      "SiteAddr": "oload.stream",
+      "Enable": true
+    },
+    {
+      "HostName": "Vidoza",
+      "Priority": 8,
+      "SiteAddr": "vidoza.net",
+      "Enable": true
+    },
+    {
+      "HostName": "GoUnlimited",
+      "Priority": 9,
+      "SiteAddr": "gounlimited.to",
+      "Enable": true
+    },
+    {
+      "HostName": "Rapidvideo",
+      "Priority": 10,
+      "SiteAddr": "www.ravi.to",
+      "Enable": true
+    },
+    {
+      "HostName": "VidLox",
+      "Priority": 11,
+      "SiteAddr": "vidlox.me",
+      "Enable": true
+    }
+  ],
+  "Proxy": false,
+  "ProxyString": "socks5://127.0.0.1:8080",
+  "DownloadThread": 7,
+  "ProcessThread": 7,
+  "CaptchaSolvingThread": 2,
+  "CaptchaSaveAfter": 2,
+  "HostFindNumber": 1,
+  "Serie_ListXPath": [
+    "//div[@id='stream']//a",
+    "//div[@id='stream']//a/@title",
+    "//div[@id='stream']//a/@href"
+  ],
+  "Serie_SingleXpath": [
+    "//h1[@itemprop='name']/span",
+    "//p[@class='seri_des' and @itemprop='accessibilitySummary' and @data-description-type='review']"
+  ],
+  "Staffel_ListXPath": [
+    "//div[@id='stream']//a",
+    "//div[@id='stream']//a/@title",
+    "//div[@id='stream']//a/@href"
+  ],
+  "Staffel_SingleXpath": null,
+  "Folge_ListXPath": [
+    "//li[@data-lang-key='1']//a[@class='watchEpisode' and @itemprop='url' and @target='_blank']/h4",
+    "//li[@data-lang-key='1']//a[@class='watchEpisode' and @itemprop='url' and @target='_blank']/@href"
+  ],
+  "Folge_SingleXpath": [
+    "//span[@class='episodeGermanTitel']"
+  ],
+  "Host_ListXPath": null,
+  "Host_SingleXpath": null
+}
