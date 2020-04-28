@@ -31,7 +31,7 @@ namespace sto
         {
             foreach (var item in textBox1.Text.Split('\n').Where(str => str != null && str.Length > 0))
             {
-                var holder = new SerieHolder(item) { Writer = AppendTextBox };
+                var holder = new SerieHolder(item);
                 SerieHolders.Add(holder);
                 holder.WorkinDir = workingDir;
                 holder.Start();
@@ -39,19 +39,6 @@ namespace sto
                 listView2.Items.Add(ListViewItemDic2[holder]);
             }
             textBox1.Text = "";
-        }
-        public void AppendTextBox(string value)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new Action<string>(AppendTextBox), new object[] { value });
-                return;
-            }
-            var selectionStart = textBox2.SelectionStart;
-            var selectionLength = textBox2.SelectionLength;
-            textBox2.Text += value + "\r\n";
-            textBox2.SelectionStart = selectionStart;
-            textBox2.SelectionLength = selectionLength;
         }
         private void Main_Shown(object sender, EventArgs e)
         {
@@ -84,36 +71,10 @@ namespace sto
             Enabled = false;
             new Setting(this).Show();
         }
-        private void Button3_Click(object sender, EventArgs e)
-        {
-            textBox2.Text = "";
-        }
-        private void Button4_Click(object sender, EventArgs e)
-        {
-            var form = new Form() { Size = Size };
-            var tb = new TextBox()
-            {
-                Multiline = true,
-                ScrollBars = ScrollBars.Vertical,
-                Height = form.Height - 50,
-                Width = form.Width - 30,
-                Text = textBox2.Text,
-                Top = 10,
-                Left = 10
-            };
-            form.Controls.Add(tb);
-            form.Show();
-
-        }
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             Process.End();
             Captcha.End();
-        }
-        private void Button5_Click(object sender, EventArgs e)
-        {
-            Enabled = false;
-            new Selector(this, SerieHolders).Show();
         }
         private void Button6_Click(object sender, EventArgs e)
         {
@@ -182,38 +143,6 @@ namespace sto
                 listView1.SelectedItems[0].ForeColor = Color.Black;
             else
                 listView1.SelectedItems[0].ForeColor = Color.Gray;
-        }
-        private void ListView2_DoubleClick(object sender, EventArgs e)
-        {
-            var t = ListViewItemDic2[listView2.SelectedItems[0]];
-            if (t.WorkingStat != Stat.Loading)
-            {
-                Enabled = false;
-                new Selector(this, new List<SerieHolder>() { t }).Show();
-            }
-        }
-        private void Main_Resize(object sender, EventArgs e)
-        {
-            var width = Width - 45;
-            if (width % 2 == 1)
-                textBox1.Width = width / 2 + 1;
-            else
-                textBox1.Width = width / 2;
-            textBox2.Width = textBox1.Width;
-            listView1.Width = width / 2;
-            listView2.Width = width / 2;
-            listView2.Left = textBox1.Width + textBox1.Left + 5;
-            listView1.Left = textBox1.Width + textBox1.Left + 5;
-            var height = Height - 96;
-            if (height % 2 == 1)
-                textBox1.Height = height / 2 + 1;
-            else
-                textBox1.Height = height / 2;
-            listView1.Height = textBox1.Height;
-            listView2.Height = height / 2;
-            textBox2.Height = height / 2;
-            listView2.Top = listView1.Height + listView1.Top + 5;
-            textBox2.Top = listView1.Height + listView1.Top + 5;
         }
         public void RefeshHosts()
         {
