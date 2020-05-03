@@ -25,7 +25,6 @@ namespace sto.DataObjects
         private List<Host> PreferdHosts = new List<Host>();
         private List<Host> Hosts = new List<Host>();
         private List<Folge> allfolgen = new List<Folge>();
-        public Kugelschreiber Writer { get; set; }
         public SerieHolder(Serie serie, string addr) { Serie = serie; URL = addr; }
         public SerieHolder(string URL) { this.URL = URL; WorkingStat = Stat.Null; }
         public override string ToString()
@@ -197,7 +196,7 @@ namespace sto.DataObjects
         {
             if (Serie == null)
             {
-                Serie = new Serie(URL) { Writer = Writer };
+                Serie = new Serie(URL);
                 Process.Start(Serie, SerieFinished);
             }
         }

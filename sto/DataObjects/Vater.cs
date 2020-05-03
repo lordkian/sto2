@@ -7,7 +7,6 @@ using System.Runtime.Serialization;
 
 namespace sto.DataObjects
 {
-    public delegate void Kugelschreiber(string text);
     [DataContract]
     public abstract class Vater
     {
@@ -20,7 +19,6 @@ namespace sto.DataObjects
         public List<List<string>> ListResult { get; set; }
         public bool UnderOperation { get; set; } = false;
         public abstract List<Vater> children { get; }
-        public Kugelschreiber Writer { get; set; }
         [DataMember]
         public bool Enable { get; set; } = true;
         [DataMember]

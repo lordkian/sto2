@@ -37,7 +37,6 @@ namespace sto.DataObjects
             var res1 = GroupedNodes(URL, SingleXpath)[0][0];
             Name = Title.Replace("Episode", "Folge") + " " + res1;
             var res = GroupedNodes(URL, ListXpath);
-            Writer($"found {res.Count} host at schafel{Staffel.Number} folge{Number}");
             foreach (var item in res)
                 Hosts.Add(new Host(item[1]) { Name = item[0] });
         }
@@ -46,7 +45,6 @@ namespace sto.DataObjects
         {
             Name = Title.Replace("Episode", "Folge") + " " + SingleResult[0] + ".mp4";
 
-            Writer($"{ListResult.Count} hosts wurden im schafel{Staffel.Number}:{Staffel.Title} folge{Number}:{Name} gefunden");
             foreach (var item in (from i in ListResult where i[1] != null && i[1].Count() > 0 select i))
                 Hosts.Add(new Host(item[1]) { Name = item[0], HostPriority = HostPriority.GetByName(item[0]) });
         }

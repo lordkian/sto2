@@ -25,17 +25,15 @@ namespace sto.DataObjects
         public void GetFolgen()
         {
             var res = from i in GroupedNodes(URL, ListXpath) where i[1].Contains("Episode") select i;
-            Writer($"found {res.Count()} folgen at schafel{Number}");
             foreach (var item in res)
-                folgen.Add(new Folge(item[2]) { Number = item[0], Title = item[1], Writer = Writer, Staffel = this });
+                folgen.Add(new Folge(item[2]) { Number = item[0], Title = item[1], Staffel = this });
         }
 
         public override void ParsData()
         {
             var res = from i in ListResult where i[1].Contains("Episode") select i;
-            Writer($"{res.Count()} folgen wurden im schafel{Number}:{Title} gefunden");
             foreach (var item in res)
-                folgen.Add(new Folge(item[2]) { Number = item[0], Title = item[1], Writer = Writer, Staffel = this });
+                folgen.Add(new Folge(item[2]) { Number = item[0], Title = item[1], Staffel = this });
         }
 
         public override string[] GetListXpath()

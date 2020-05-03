@@ -24,18 +24,16 @@ namespace sto.DataObjects
             Name = res[0];
             Description = res[1];
             var res1 = from i in GroupedNodes(URL, ListXpath) where i[1].Contains("Staffel") && !i[1].Contains("Episode") select i;
-            Writer($"found {res1.Count()} staffeln");
             foreach (var item in res1)
-                Staffeln.Add(new Staffel(item[2]) { Number = item[0], Title = item[1], Writer = Writer, Serie = this });
+                Staffeln.Add(new Staffel(item[2]) { Number = item[0], Title = item[1], Serie = this });
         }
         public override void ParsData()
         {
             Name = SingleResult[0];
             Description = SingleResult[1];
             var res = from i in ListResult where i[1].Contains("Staffel") && !i[1].Contains("Episode") select i;
-            Writer($"{res.Count()} staffeln wurden gefunden");
             foreach (var item in res)
-                Staffeln.Add(new Staffel(item[2]) { Number = item[0], Title = item[1], Writer = Writer, Serie = this, Name = item[1] });
+                Staffeln.Add(new Staffel(item[2]) { Number = item[0], Title = item[1], Serie = this, Name = item[1] });
         }
 
         public override string[] GetListXpath()
