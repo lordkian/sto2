@@ -19,6 +19,7 @@ namespace sto
         public bool Proxy { get; set; }
         public string ProxyString { get; set; }
         public static int KeepingHost { get; set; }
+        public static Repository Repo = new Repository();
         internal static List<HostPriority> HostPriorities { get; set; } = new List<HostPriority>();
         internal readonly BiDictionary<HostPriority, ListViewItem> ListViewItemDic = new BiDictionary<HostPriority, ListViewItem>();
         internal readonly BiDictionary<SerieHolder, ListViewItem> ListViewItemDic2 = new BiDictionary<SerieHolder, ListViewItem>();
@@ -31,7 +32,7 @@ namespace sto
         {
             foreach (var item in textBox1.Text.Split('\n').Where(str => str != null && str.Length > 0))
             {
-                var holder = new SerieHolder(item);
+                var holder = new SerieHolder(this,item);
                 SerieHolders.Add(holder);
                 holder.WorkinDir = workingDir;
                 holder.Start();
@@ -134,6 +135,11 @@ namespace sto
                     listView2.Items.Add(ListViewItemDic2[item]);
                 }
             }
+        }
+        public void ShowOptions()
+        {
+            checkedListBox1.Items.Clear();
+            checkedListBox1.Items.AddRange(Repo.AllLines.ToArray());
         }
         private void ListView1_DoubleClick(object sender, EventArgs e)
         {

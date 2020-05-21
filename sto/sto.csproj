@@ -124,6 +124,7 @@
     <Compile Include="DataObjects\Serie.cs" />
     <Compile Include="DataObjects\Staffel.cs" />
     <Compile Include="DataObjects\Vater.cs" />
+    <Compile Include="Repository.cs" />
     <Compile Include="Setting.cs">
       <SubType>Form</SubType>
     </Compile>
