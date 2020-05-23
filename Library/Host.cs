@@ -7,6 +7,7 @@ namespace Library
     public class Host
     {
         public string HostURL { get; set; }
+        public string HostName { get; set; }
         public string URL { get; set; }
 
     }
