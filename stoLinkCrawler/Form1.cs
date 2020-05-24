@@ -16,25 +16,47 @@ namespace stoLinkCrawler
 {
     public partial class Form1 : Form
     {
+        private delegate void deleg();
         List<Serie> series = new List<Serie>();
         public Form1()
         {
             InitializeComponent();
+            ServicePointManager.DefaultConnectionLimit = 16;
         }
         private void button1_Click(object sender, EventArgs e)
         {
 
-            series.Clear();
         }
         private void button2_Click(object sender, EventArgs e)
         {
             var strs = textBox2.Text.Replace("\r", "").Split('\n');
             textBox2.Text = "";
-            foreach (var item in strs)
+            textBox1.Enabled = false;
+            textBox2.Enabled = false;
+            button1.Enabled = false;
+            button2.Enabled = false;
+
+            Task.Factory.StartNew(() =>
             {
-                var s = new Serie() { URL = item };
-                series.Add(s);
-                FillSerie(s);
+                foreach (var item in strs)
+                {
+                    var s = new Serie() { URL = item };
+                    series.Add(s);
+                    Task.Factory.StartNew(() => { FillSerie(s); }, TaskCreationOptions.AttachedToParent);
+                }
+            }).ContinueWith((t) => { Unblock(); });
+
+        }
+        private void Unblock()
+        {
+            if (InvokeRequired)
+                Invoke(new deleg(Unblock));
+            else
+            {
+                textBox1.Enabled = true;
+                textBox2.Enabled = true;
+                button1.Enabled = true;
+                button2.Enabled = true;
             }
         }
         private void FillSerie(Serie serie)
@@ -50,7 +72,7 @@ namespace stoLinkCrawler
                 {
                     var st = new Staffel() { URL = "https://s.to" + item[0], Number = item[1] };
                     serie.Staffeln.Add(st);
-                    FillStaffel(st);
+                    Task.Factory.StartNew(() => { FillStaffel(st); }, TaskCreationOptions.AttachedToParent);
                 }
         }
         private void FillStaffel(Staffel staffel)
@@ -62,7 +84,7 @@ namespace stoLinkCrawler
                 {
                     var f = new Folge() { URL = "https://s.to" + item[0], Number = item[1] };
                     staffel.Folgen.Add(f);
-                    FillFolge(f);
+                    Task.Factory.StartNew(() => { FillFolge(f); }, TaskCreationOptions.AttachedToParent);
                 }
         }
         private void FillFolge(Folge folge)
