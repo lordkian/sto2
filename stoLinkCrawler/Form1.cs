@@ -1,10 +1,12 @@
 ﻿using HtmlAgilityPack;
 using Library;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -53,14 +55,20 @@ namespace stoLinkCrawler
                 }
             }).ContinueWith((t) =>
             {
-                Unblock();
                 Save();
+                Unblock();
             });
 
         }
         private void Save()
         {
-
+            foreach (var item in series)
+            {
+                Directory.CreateDirectory(label1.Text + "\\" + item.Name);
+                StreamWriter streamWriter = new StreamWriter(label1.Text + "\\" + item.Name + "\\" + item.Name + ".json");
+                streamWriter.Write(JsonConvert.SerializeObject(itemk, Formatting.Indented));
+                streamWriter.Close();
+            }
         }
         private void Unblock()
         {
