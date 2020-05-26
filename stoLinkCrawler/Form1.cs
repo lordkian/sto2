@@ -18,6 +18,8 @@ namespace stoLinkCrawler
     {
         private delegate void deleg();
         List<Serie> series = new List<Serie>();
+        bool isModified = false;
+        private object lockObj1 = new object();
         public Form1()
         {
             InitializeComponent();
@@ -25,13 +27,18 @@ namespace stoLinkCrawler
         }
         private void button1_Click(object sender, EventArgs e)
         {
-
+            var d = new FolderBrowserDialog();
+            d.SelectedPath = label1.Text;
+            var res = d.ShowDialog();
+            if (res == DialogResult.OK)
+                label1.Text = d.SelectedPath;
         }
         private void button2_Click(object sender, EventArgs e)
         {
+            if (label1.Text == "")
+                button1_Click(sender, e);
             var strs = textBox2.Text.Replace("\r", "").Split('\n');
             textBox2.Text = "";
-            textBox1.Enabled = false;
             textBox2.Enabled = false;
             button1.Enabled = false;
             button2.Enabled = false;
@@ -44,7 +51,15 @@ namespace stoLinkCrawler
                     series.Add(s);
                     Task.Factory.StartNew(() => { FillSerie(s); }, TaskCreationOptions.AttachedToParent);
                 }
-            }).ContinueWith((t) => { Unblock(); });
+            }).ContinueWith((t) =>
+            {
+                Unblock();
+                Save();
+            });
+
+        }
+        private void Save()
+        {
 
         }
         private void Unblock()
@@ -53,7 +68,6 @@ namespace stoLinkCrawler
                 Invoke(new deleg(Unblock));
             else
             {
-                textBox1.Enabled = true;
                 textBox2.Enabled = true;
                 button1.Enabled = true;
                 button2.Enabled = true;
@@ -74,6 +88,10 @@ namespace stoLinkCrawler
                     serie.Staffeln.Add(st);
                     Task.Factory.StartNew(() => { FillStaffel(st); }, TaskCreationOptions.AttachedToParent);
                 }
+            lock (lockObj1)
+            {
+                isModified = true;
+            }
         }
         private void FillStaffel(Staffel staffel)
         {
@@ -86,6 +104,10 @@ namespace stoLinkCrawler
                     staffel.Folgen.Add(f);
                     Task.Factory.StartNew(() => { FillFolge(f); }, TaskCreationOptions.AttachedToParent);
                 }
+            lock (lockObj1)
+            {
+                isModified = true;
+            }
         }
         private void FillFolge(Folge folge)
         {
@@ -94,6 +116,10 @@ namespace stoLinkCrawler
                 "//li[@data-lang-key='1']//a[@class='watchEpisode' and @itemprop='url' and @target='_blank']/h4");
             foreach (var item in res)
                 folge.Hosts.Add(new Host() { URL = "https://s.to" + item[0], HostName = item[1] });
+            lock (lockObj1)
+            {
+                isModified = true;
+            }
         }
         public static string LoadData(string URL)
         {
@@ -152,6 +178,21 @@ namespace stoLinkCrawler
                 grouped.Add(list);
             }
             return grouped;
+        }
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            lock (lockObj1)
+            {
+                if (!isModified)
+                    return;
+                else
+                    isModified = false;
+            }
+            listBox1.Items.Clear();
+            foreach (var item in series)
+            {
+                listBox1.Items.Add(item.Status());
+            }
         }
     }
 }

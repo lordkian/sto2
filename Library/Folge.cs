@@ -9,5 +9,9 @@ namespace Library
         public List<Host> Hosts { get; private set; } = new List<Host>();
         public string URL { get; set; }
         public string Number { get; set; }
+        public bool Status()
+        {
+            return Hosts.Count > 0;
+        }
     }
 }
